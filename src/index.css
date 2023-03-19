@@ -11,6 +11,7 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  width: 100%;
 }
 
 code {
@@ -24,8 +25,7 @@ code {
 li {
   list-style-type: none;
 }
-.delete,
-.edit {
+.delete, .edit {
   font-size: 1.6rem;
 }
 
@@ -33,5 +33,5 @@ li {
   color: rgb(219, 1, 1);
 }
 .edit:hover {
-  color: rgb(46, 226, 46);
+  color: rgb(4, 184, 49);
 }
