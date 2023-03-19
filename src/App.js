@@ -183,28 +183,39 @@ function App() {
             )}
           </ul>
         </div>
-        <div
-          className="todo_stats"
-          style={{ border: "1px solid rgb(61, 60, 60)" }}
-        >
-          <p
-            className="todo-count"
-            style={{ paddingRight: "1rem", fontWeight: "bold" }}
-          >
-            Total Todos:
-            <span style={{ fontWeight: "normal", paddingLeft: "0.5rem" }}>
-              {taskData.length}
-            </span>
-          </p>
-          <p
-            className="todo-count"
-            style={{ paddingRight: "1rem", fontWeight: "bold" }}
-          >
-            Todos left:
-            <span style={{ fontWeight: "normal", paddingLeft: "0.5rem" }}>
-              {filter()}
-            </span>
-          </p>
+
+        <div className="todo_stats">
+          <div style={{ display: "flex", justifyContent: "center" }}>
+            <p
+              className="todo-count"
+              style={{ paddingRight: "1rem", fontWeight: "bold" }}
+            >
+              Total Todos:
+              <span style={{ fontWeight: "normal", paddingLeft: "0.5rem" }}>
+                {taskData.length}
+              </span>
+            </p>
+            <p
+              className="todo-count"
+              style={{ paddingRight: "1rem", fontWeight: "bold" }}
+            >
+              Todos left:
+              <span style={{ fontWeight: "normal", paddingLeft: "0.5rem" }}>
+                {filter()}
+              </span>
+            </p>
+          </div>
+
+          <div className="filter-btn">
+            <button>All</button>
+            <button>Completed</button>
+            <button>Incomplete</button>
+          </div>
+
+          <div className="filter-btn">
+            <button>Delete Selected</button>
+            <button>Clear All</button>
+          </div>
         </div>
       </main>
     </div>
