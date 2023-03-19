@@ -78,7 +78,7 @@ function App() {
     <div className="App">
       <header className="header">
         <h1>
-          <MdNote /> Todo List - List your todos
+          <MdNote /> Taskkro- List your tasks and todos
         </h1>
       </header>
       <main className="main">
