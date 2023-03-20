@@ -18,6 +18,7 @@ function App() {
   let [showError, setShowError] = useState(false);
   let [editMode, setEditMode] = useState(false);
   let [editIndex, setEditIndex] = useState(-1);
+  // let [filterTaskArr, setFilterTaskArr] = useState([]);
 
   const addTask = () => {
     if (!input.taskName || !input.dueDate) {
@@ -72,6 +73,23 @@ function App() {
     setTaskData(temp);
     localStorage.setItem("taskData", JSON.stringify(temp));
     setInput("");
+  };
+
+  const clearAll = () => {
+    setTaskData([]);
+    localStorage.setItem("taskData", JSON.stringify(taskData));
+  };
+
+  const filterTask = (status) => {
+    if (status === "completed") {
+      const filterTask = taskData.filter((el) => el.completed);
+      console.log(filterTask);
+    } else if (status === "inComplete") {
+      const filterTask = taskData.filter((el) => !el.completed);
+      console.log(filterTask);
+    } else {
+      console.log(taskData);
+    }
   };
 
   return (
@@ -153,16 +171,18 @@ function App() {
                     <div className="left-col flex">
                       <input
                         type="checkbox"
-                        name="done"
-                        checked={completed}
-                        onChange={() => completedTask(index)}
+                        name="select"
+                        // checked={completed}
+                        // onChange={() => completedTask(index)}
                       />
                       <p
                         className="task-title"
                         style={{
                           textDecoration: completed && "line-through",
                           transition: completed && "all 1s ease",
+                          cursor: "pointer",
                         }}
+                        onClick={() => completedTask(index)}
                       >
                         {taskName}
                       </p>
@@ -185,7 +205,13 @@ function App() {
         </div>
 
         <div className="todo_stats">
-          <div style={{ display: "flex", justifyContent: "center" }}>
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              flexWrap: "wrap",
+            }}
+          >
             <p
               className="todo-count"
               style={{ paddingRight: "1rem", fontWeight: "bold" }}
@@ -207,14 +233,14 @@ function App() {
           </div>
 
           <div className="filter-btn">
-            <button>All</button>
-            <button>Completed</button>
-            <button>Incomplete</button>
+            <button onClick={() => filterTask("all")}>All</button>
+            <button onClick={() => filterTask("completed")}>Completed</button>
+            <button onClick={() => filterTask("inComplete")}>Incomplete</button>
           </div>
 
           <div className="filter-btn">
             <button>Delete Selected</button>
-            <button>Clear All</button>
+            <button onClick={clearAll}>Clear All</button>
           </div>
         </div>
       </main>
