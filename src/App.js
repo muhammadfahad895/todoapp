@@ -3,7 +3,6 @@ import { AiOutlineDelete } from "react-icons/ai";
 import { TbEditCircle } from "react-icons/tb";
 import { MdNote } from "react-icons/md";
 import { useState } from "react";
-import set from "date-fns/set/index.js";
 
 function App() {
   let [input, setInput] = useState({
@@ -88,7 +87,7 @@ function App() {
 
   const clearAll = () => {
     let temp = [];
-    // setTaskData(temp);
+    setTaskData(temp);
     setFilterTaskArr(temp);
     localStorage.setItem("taskData", JSON.stringify(temp));
   };
@@ -118,6 +117,7 @@ function App() {
     <div className="App">
       <header className="header">
         <h1>
+          isSelect
           <MdNote /> Taskkro - List your tasks and todos
         </h1>
       </header>
@@ -206,6 +206,7 @@ function App() {
                           transition: completed && "all 1s ease",
                           cursor: "pointer",
                         }}
+                        isSelect
                         onClick={() => completedTask(index)}
                       >
                         {taskName}
