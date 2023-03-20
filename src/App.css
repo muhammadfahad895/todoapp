@@ -122,7 +122,6 @@
   align-items: center;
   justify-content: space-between;
   border: 1px solid rgb(61, 60, 60);
-  flex-wrap: wrap;
 }
 
 .filter-btn {
@@ -153,4 +152,22 @@ input[type="checkbox"] {
   border-radius: 0.15em;
   transform: translateY(-0.075em);
   transition: all 1ms cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+@media only screen and (max-width: 980px) {
+  .main {
+    width: 95%;
+  }
+
+  .header {
+    font-size: 1;
+  }
+  .main .create-todo,
+  .main .todo_stats {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  .filter-btn button {
+    font-size: 1rem;
+  }
 }
