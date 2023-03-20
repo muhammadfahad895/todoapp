@@ -3,6 +3,7 @@ import { AiOutlineDelete } from "react-icons/ai";
 import { TbEditCircle } from "react-icons/tb";
 import { MdNote } from "react-icons/md";
 import { useState } from "react";
+import set from "date-fns/set/index.js";
 
 function App() {
   let [input, setInput] = useState({
@@ -18,7 +19,9 @@ function App() {
   let [showError, setShowError] = useState(false);
   let [editMode, setEditMode] = useState(false);
   let [editIndex, setEditIndex] = useState(-1);
-  // let [filterTaskArr, setFilterTaskArr] = useState([]);
+  let [filterTaskArr, setFilterTaskArr] = useState(taskData || []);
+  let [deleteSelected, setDeleteSelected] = useState([]);
+  let [isSelect, setIsSelect] = useState(false);
 
   const addTask = () => {
     if (!input.taskName || !input.dueDate) {
@@ -38,6 +41,7 @@ function App() {
       },
     ];
     setTaskData(updatedTaskData);
+    setFilterTaskArr(updatedTaskData);
     localStorage.setItem("taskData", JSON.stringify(updatedTaskData));
     setInput({ taskName: "", dueDate: "", taskPriority: "Urgent" });
   };
@@ -45,6 +49,7 @@ function App() {
   const deleteTask = (index) => {
     const updateData = taskData.filter((el) => taskData.indexOf(el) !== index);
     setTaskData(updateData);
+    setFilterTaskArr(updateData);
     localStorage.setItem("taskData", JSON.stringify(updateData));
   };
 
@@ -71,25 +76,42 @@ function App() {
     const temp = [...taskData];
     temp[editIndex] = input;
     setTaskData(temp);
+    setFilterTaskArr(temp);
     localStorage.setItem("taskData", JSON.stringify(temp));
-    setInput("");
+    setEditMode(false);
+    setInput({
+      taskName: "",
+      dueDate: "",
+      taskPriority: "Urgent",
+    });
   };
 
   const clearAll = () => {
-    setTaskData([]);
-    localStorage.setItem("taskData", JSON.stringify(taskData));
+    let temp = [];
+    // setTaskData(temp);
+    setFilterTaskArr(temp);
+    localStorage.setItem("taskData", JSON.stringify(temp));
   };
 
   const filterTask = (status) => {
     if (status === "completed") {
       const filterTask = taskData.filter((el) => el.completed);
-      console.log(filterTask);
+      setFilterTaskArr(filterTask);
     } else if (status === "inComplete") {
       const filterTask = taskData.filter((el) => !el.completed);
-      console.log(filterTask);
+      setFilterTaskArr(filterTask);
     } else {
-      console.log(taskData);
+      setFilterTaskArr(taskData);
     }
+  };
+
+  const deleteSelectedTask = () => {
+    setFilterTaskArr(taskData.filter((el) => !deleteSelected.includes(el.id)));
+    localStorage.setItem("taskData", JSON.stringify(filterTaskArr));
+  };
+
+  const selectTask = (index) => {
+    setDeleteSelected([...deleteSelected, taskData[index].id]);
   };
 
   return (
@@ -164,7 +186,7 @@ function App() {
 
         <div className="todo">
           <ul className="todo-list">
-            {taskData?.map(
+            {filterTaskArr?.map(
               ({ id, taskName, dueDate, taskPriority, completed }, index) => {
                 return (
                   <li className="todo-item" key={id}>
@@ -172,8 +194,10 @@ function App() {
                       <input
                         type="checkbox"
                         name="select"
+                        id="checkBox"
                         // checked={completed}
-                        // onChange={() => completedTask(index)}
+                        value={isSelect}
+                        onChange={() => selectTask(index)}
                       />
                       <p
                         className="task-title"
@@ -239,7 +263,7 @@ function App() {
           </div>
 
           <div className="filter-btn">
-            <button>Delete Selected</button>
+            <button onClick={deleteSelectedTask}>Delete Selected</button>
             <button onClick={clearAll}>Clear All</button>
           </div>
         </div>
