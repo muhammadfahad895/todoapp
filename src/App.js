@@ -106,6 +106,7 @@ function App() {
 
   const deleteSelectedTask = () => {
     setFilterTaskArr(taskData.filter((el) => !deleteSelected.includes(el.id)));
+    setTaskData(taskData.filter((el) => !deleteSelected.includes(el.id)));
     localStorage.setItem("taskData", JSON.stringify(filterTaskArr));
   };
 
