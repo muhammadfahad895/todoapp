@@ -20,7 +20,7 @@ function App() {
   let [editIndex, setEditIndex] = useState(-1);
   let [filterTaskArr, setFilterTaskArr] = useState(taskData || []);
   let [deleteSelected, setDeleteSelected] = useState([]);
-  let [isSelect, setIsSelect] = useState(false);
+  let [isSelect] = useState(false);
 
   const addTask = () => {
     if (!input.taskName || !input.dueDate) {
@@ -118,7 +118,6 @@ function App() {
     <div className="App">
       <header className="header">
         <h1>
-          isSelect
           <MdNote /> Taskkro - List your tasks and todos
         </h1>
       </header>
