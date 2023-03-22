@@ -2,7 +2,6 @@ import "./App.css";
 import { AiOutlineDelete } from "react-icons/ai";
 import { TbEditCircle } from "react-icons/tb";
 import { MdNote } from "react-icons/md";
-import { GrUpdate } from "react-icons/gr";
 import { useState } from "react";
 import { toast } from "react-toastify";
 
