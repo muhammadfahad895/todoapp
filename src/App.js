@@ -2,7 +2,9 @@ import "./App.css";
 import { AiOutlineDelete } from "react-icons/ai";
 import { TbEditCircle } from "react-icons/tb";
 import { MdNote } from "react-icons/md";
+import { GrUpdate } from "react-icons/gr";
 import { useState } from "react";
+import { toast } from "react-toastify";
 
 function App() {
   let [input, setInput] = useState({
@@ -21,6 +23,16 @@ function App() {
   let [filterTaskArr, setFilterTaskArr] = useState(taskData || []);
   let [deleteSelected, setDeleteSelected] = useState([]);
   let [isSelect] = useState(false);
+  let [toastObj] = useState({
+    position: "bottom-right",
+    autoClose: 5000,
+    hideProgressBar: false,
+    closeOnClick: true,
+    pauseOnHover: true,
+    draggable: true,
+    progress: undefined,
+    theme: "dark",
+  });
 
   const addTask = () => {
     if (!input.taskName || !input.dueDate) {
@@ -43,6 +55,7 @@ function App() {
     setFilterTaskArr(updatedTaskData);
     localStorage.setItem("taskData", JSON.stringify(updatedTaskData));
     setInput({ taskName: "", dueDate: "", taskPriority: "Urgent" });
+    toast.success("Task added!", toastObj);
   };
 
   const deleteTask = (index) => {
@@ -50,6 +63,10 @@ function App() {
     setTaskData(updateData);
     setFilterTaskArr(updateData);
     localStorage.setItem("taskData", JSON.stringify(updateData));
+    toast.error(" Task deleted!", {
+      ...toastObj,
+      icon: <AiOutlineDelete />,
+    });
   };
 
   const filter = () => {
@@ -83,6 +100,10 @@ function App() {
       dueDate: "",
       taskPriority: "Urgent",
     });
+    toast.success("Task Updated!", {
+      ...toastObj,
+      icon: "↻",
+    });
   };
 
   const clearAll = () => {
@@ -90,6 +111,10 @@ function App() {
     setTaskData(temp);
     setFilterTaskArr(temp);
     localStorage.setItem("taskData", JSON.stringify(temp));
+    toast.error("All Task deleted!", {
+      ...toastObj,
+      icon: <AiOutlineDelete />,
+    });
   };
 
   const filterTask = (status) => {
@@ -108,6 +133,10 @@ function App() {
     setFilterTaskArr(taskData.filter((el) => !deleteSelected.includes(el.id)));
     setTaskData(taskData.filter((el) => !deleteSelected.includes(el.id)));
     localStorage.setItem("taskData", JSON.stringify(filterTaskArr));
+    toast.error("Selected Task deleted!", {
+      ...toastObj,
+      icon: <AiOutlineDelete />,
+    });
   };
 
   const selectTask = (index) => {
@@ -118,9 +147,12 @@ function App() {
     <div className="App">
       <header className="header">
         <h1>
+          toastObj
           <MdNote /> Taskkro - List your tasks and todos
         </h1>
+        toastObj
       </header>
+
       <main className="main">
         <div className="create-todo">
           <input
