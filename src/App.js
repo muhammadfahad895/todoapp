@@ -146,10 +146,8 @@ function App() {
     <div className="App">
       <header className="header">
         <h1>
-          toastObj
           <MdNote /> Taskkro - List your tasks and todos
         </h1>
-        toastObj
       </header>
 
       <main className="main">
