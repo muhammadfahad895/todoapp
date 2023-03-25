@@ -19,12 +19,12 @@ function App() {
   let [showError, setShowError] = useState(false);
   let [editMode, setEditMode] = useState(false);
   let [editIndex, setEditIndex] = useState(-1);
-  let [filterTaskArr, setFilterTaskArr] = useState(taskData || []);
+  let [filterTaskArr, setFilterTaskArr] = useState(taskData);
   let [deleteSelected, setDeleteSelected] = useState([]);
   let [isSelect] = useState(false);
   let [toastObj] = useState({
     position: "bottom-right",
-    autoClose: 5000,
+    autoClose: 2000,
     hideProgressBar: false,
     closeOnClick: true,
     pauseOnHover: true,
@@ -33,8 +33,12 @@ function App() {
     theme: "dark",
   });
 
+  const setDataInLs = (key, value) => {
+    localStorage.setItem(key, JSON.stringify(value));
+  };
+
   const addTask = () => {
-    if (!input.taskName || !input.dueDate) {
+    if (!input?.taskName?.trim() || !input.dueDate) {
       setShowError(true);
       return;
     }
@@ -52,7 +56,7 @@ function App() {
     ];
     setTaskData(updatedTaskData);
     setFilterTaskArr(updatedTaskData);
-    localStorage.setItem("taskData", JSON.stringify(updatedTaskData));
+    setDataInLs("taskData", updatedTaskData);
     setInput({ taskName: "", dueDate: "", taskPriority: "Urgent" });
     toast.success("Task added!", toastObj);
   };
@@ -61,7 +65,7 @@ function App() {
     const updateData = taskData.filter((el) => taskData.indexOf(el) !== index);
     setTaskData(updateData);
     setFilterTaskArr(updateData);
-    localStorage.setItem("taskData", JSON.stringify(updateData));
+    setDataInLs("taskData", updateData);
     toast.error(" Task deleted!", {
       ...toastObj,
       icon: <AiOutlineDelete />,
@@ -76,9 +80,8 @@ function App() {
   const completedTask = (index) => {
     const temp = [...taskData];
     temp[index].completed = !temp[index].completed;
-
     setTaskData(temp);
-    localStorage.setItem("taskData", JSON.stringify(temp));
+    setDataInLs("taskData", temp);
   };
 
   const editTask = (index) => {
@@ -92,7 +95,7 @@ function App() {
     temp[editIndex] = input;
     setTaskData(temp);
     setFilterTaskArr(temp);
-    localStorage.setItem("taskData", JSON.stringify(temp));
+    setDataInLs("taskData", temp);
     setEditMode(false);
     setInput({
       taskName: "",
@@ -109,7 +112,7 @@ function App() {
     let temp = [];
     setTaskData(temp);
     setFilterTaskArr(temp);
-    localStorage.setItem("taskData", JSON.stringify(temp));
+    setDataInLs("taskData", temp);
     toast.error("All Task deleted!", {
       ...toastObj,
       icon: <AiOutlineDelete />,
@@ -129,9 +132,9 @@ function App() {
   };
 
   const deleteSelectedTask = () => {
-    setFilterTaskArr(taskData.filter((el) => !deleteSelected.includes(el.id)));
-    setTaskData(taskData.filter((el) => !deleteSelected.includes(el.id)));
-    localStorage.setItem("taskData", JSON.stringify(filterTaskArr));
+    const array = taskData.filter((el) => !deleteSelected.includes(el.id));
+    setFilterTaskArr(array);
+    setDataInLs("taskData", array);
     toast.error("Selected Task deleted!", {
       ...toastObj,
       icon: <AiOutlineDelete />,
@@ -209,7 +212,9 @@ function App() {
         </div>
         {showError && (
           <p style={{ textAlign: "center", color: "red" }}>
-            {!input.taskName ? " Please enter task" : "Please select due date"}
+            {!input.taskName.trim()
+              ? "Please enter task"
+              : "Please select due date"}
           </p>
         )}
 
@@ -285,16 +290,14 @@ function App() {
               </span>
             </p>
           </div>
-
           <div className="filter-btn">
             <button onClick={() => filterTask("all")}>All</button>
             <button onClick={() => filterTask("completed")}>Completed</button>
             <button onClick={() => filterTask("inComplete")}>Incomplete</button>
           </div>
-
           <div className="filter-btn">
             <button onClick={deleteSelectedTask}>Delete Selected</button>
-            <button onClick={clearAll}>Clear All</button>
+            <button onClick={clearAll}>Delete All</button>
           </div>
         </div>
       </main>
